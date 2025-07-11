@@ -1,5 +1,5 @@
 <template>
-  <div class="p-2 bg-amber-400 h-screen flex flex-col justify-between">
+  <div class="p-2 h-screen flex flex-col justify-between">
     <TheHeader />
     <slot />
     <TheFooter />
