@@ -1,15 +1,14 @@
 <template>
   <UCard
     variant="subtle"
-    class="py-2">
-    <template #header>
-      <div class="flex justify-between">
+    class="book_item py-2">
+    <div class="flex justify-between">
+      <div>
         <h2>{{ props.book.author }}</h2>
-        <div>actions</div>
+        <span class="text-sm italic">{{ props.book.title }}</span>
       </div>
-    </template>
-
-    <span>{{ props.book.title }}</span>
+      <div>actions</div>
+    </div>
 
     <!-- <template #footer>
       <span>{{ props.book.publisher }}</span>
@@ -29,4 +28,4 @@ const props = defineProps({
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="scss"></style>
