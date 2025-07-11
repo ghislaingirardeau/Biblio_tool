@@ -7,6 +7,7 @@ export default defineNuxtConfig({
   components: [
     // ~/components/special-components/Btn.vue => <SpecialBtn />
     { path: '~/components/add-book-components', prefix: 'AddBook' },
+    { path: '~/components/list-book-components', prefix: 'ListBook' },
 
     '~/components',
   ],

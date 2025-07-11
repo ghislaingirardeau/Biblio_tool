@@ -17,7 +17,7 @@
     </template>
 
     <template #body>
-      <add-book-stepper />
+      <AddBookStepper />
     </template>
   </UModal>
 </template>
