@@ -1,7 +1,7 @@
 <template>
   <UCard
     variant="subtle"
-    class="book_item py-2">
+    class="my-2">
     <div class="flex justify-between">
       <div>
         <h2>{{ props.book.author }}</h2>
