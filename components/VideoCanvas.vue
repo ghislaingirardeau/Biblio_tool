@@ -204,7 +204,7 @@ watchEffect(() => {
   // preview on a video element
   if (stream.value) {
     videoRef.value!.srcObject = stream.value;
-    videoRef.value.play();
+    videoRef.value!.play();
     drawVideoToCanvas();
   }
 });

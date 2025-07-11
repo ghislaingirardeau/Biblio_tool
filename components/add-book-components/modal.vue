@@ -1,0 +1,29 @@
+<template>
+  <UModal
+    v-model:open="open"
+    fullscreen>
+    <UButton
+      icon="i-lucide-search"
+      size="lg"
+      color="primary"
+      variant="solid" />
+
+    <template #title>
+      <span>Add a new book</span>
+    </template>
+
+    <template #description>
+      <span>Scan the ISBN bar code</span>
+    </template>
+
+    <template #body>
+      <add-book-stepper />
+    </template>
+  </UModal>
+</template>
+
+<script setup lang="ts">
+const open = ref(false);
+</script>
+
+<style scoped></style>

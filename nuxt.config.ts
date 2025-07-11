@@ -3,5 +3,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
   modules: ['@nuxt/eslint', '@nuxt/icon', '@nuxt/ui', '@vueuse/nuxt'],
-  css: ['~/assets/css/main.css']
+  css: ['~/assets/css/main.css'],
+  components: [
+    // ~/components/special-components/Btn.vue => <SpecialBtn />
+    { path: '~/components/add-book-components', prefix: 'AddBook' },
+
+    '~/components',
+  ],
 });
