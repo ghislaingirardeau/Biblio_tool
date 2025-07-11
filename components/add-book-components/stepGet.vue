@@ -1,15 +1,10 @@
 <template>
   <div>
-    <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui autem
-      doloribus molestias nihil aspernatur officia fuga harum suscipit
-      repudiandae, id culpa nemo eligendi excepturi tempore voluptate placeat
-      enim. Ipsum, doloribus!
-    </p>
+    <AddBookScanBar />
     <USeparator
       orientation="horizontal"
       class="w-full my-5" />
-    <p>Type ISBN</p>
+    <AddBookIsbnInput />
     <USeparator
       orientation="horizontal"
       class="w-full my-5" />

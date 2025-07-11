@@ -20,13 +20,13 @@ const active = ref(0);
 const items = ref([
   {
     title: 'ISBN',
-    description: 'Book Data',
+    description: 'Look like 976-xxxxx',
     icon: 'i-lucide-house',
   },
 
   {
-    title: 'Checkout',
-    description: 'Confirm your order',
+    title: 'Checkout book data',
+    description: 'Correct if needed',
   },
 ]);
 </script>
