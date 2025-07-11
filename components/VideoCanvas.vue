@@ -1,9 +1,11 @@
 <template>
   <canvas
     ref="canvasRef"
-    :width="500"
+    :width="350"
     :height="300"
-    style="border: 1px solid #ccc; touch-action: none"
+    @touchstart="startDrag"
+    @touchmove="onDrag"
+    @touchend="stopDrag"
     @mousedown="startDrag"
     @mousemove="onDrag"
     @mouseup="stopDrag"
@@ -22,6 +24,10 @@
 </template>
 
 <script setup lang="ts">
+import Tesseract from 'tesseract.js';
+
+const { stream, start } = useUserMedia();
+
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const ctx = ref<CanvasRenderingContext2D | null>(null);
 
@@ -59,10 +65,10 @@ function drawRect() {
   );
 }
 
-function startDrag(event: MouseEvent) {
-  const mouseX = event.offsetX;
-  const mouseY = event.offsetY;
+function startDrag(event: MouseEvent | TouchEvent) {
+  const { mouseX, mouseY } = getMouseMove(event);
 
+  // Mouse inside the rect but not in resizing
   if (
     mouseX >= rect.value.x &&
     mouseX <= rect.value.x + rect.value.width - 20 &&
@@ -70,9 +76,13 @@ function startDrag(event: MouseEvent) {
     mouseY <= rect.value.y + rect.value.height - 20
   ) {
     isDragging = true;
+    // pour conserver l'endroit exacte du click et que le mouvement du rect suive la souris
+    // ex: clic à 150px et rect.x à 20 => offset est donc a 130px
     offsetX = mouseX - rect.value.x;
     offsetY = mouseY - rect.value.y;
   }
+
+  // click inside resizing rect
   if (
     mouseX >= rect.value.x + rect.value.width - 20 &&
     mouseX <= rect.value.x + rect.value.width &&
@@ -80,17 +90,20 @@ function startDrag(event: MouseEvent) {
     mouseY <= rect.value.y + rect.value.height
   ) {
     isResizing = true;
+    // pour conserver l'endroit exacte du click et que le resize du rect suive la souris
     offsetX = mouseX - rect.value.width;
     offsetY = mouseY - rect.value.height;
   }
 }
 
-function onDrag(event: MouseEvent) {
+function onDrag(event: MouseEvent | TouchEvent) {
   if (!isDragging && !isResizing) return;
-  const mouseX = event.offsetX;
-  const mouseY = event.offsetY;
+  // le mouvement x de la souris
+  const { mouseX, mouseY } = getMouseMove(event);
 
   // les coordonnées souhaitées, le point de départ de la souris - son deplacement
+  // ex avec drag: mouse move at 200px (soit 50px vers la droite) => 200 - 130 = 70px
+  // donc je veux que le carré soit à 70px du bord (50px de déplacement + 20px dejà de la bordure)
   const desiredX = mouseX - offsetX;
   const desiredY = mouseY - offsetY;
 
@@ -139,7 +152,7 @@ function drawVideoToCanvas() {
 }
 
 // Capture only the rectangle area from the video
-function captureRect() {
+async function captureRect() {
   const video = videoRef.value;
   if (!video) return;
 
@@ -163,6 +176,11 @@ function captureRect() {
   );
 
   capturedImg.value = tempCanvas.toDataURL('image/png');
+
+  const result = await Tesseract.recognize(capturedImg.value, 'fra', {
+    logger: (m) => console.log(m),
+  });
+  console.log(result.data.text);
 }
 
 onMounted(() => {
@@ -171,15 +189,30 @@ onMounted(() => {
   //   .getUserMedia({ video: true, audio: false })
   //   .then((stream) => {
   //     if (videoRef.value) {
-  //       videoRef.value.srcObject = stream
-  //       videoRef.value.play()
-  //       drawVideoToCanvas()
+  //       videoRef.value.srcObject = stream;
+  //       videoRef.value.play();
+  //       drawVideoToCanvas();
   //     }
   //   })
   //   .catch((err) => {
-  //     console.error(`An error occurred: ${err}`)
-  //   })
+  //     console.error(`An error occurred: ${err}`);
+  //   });
+  start();
+});
+
+watchEffect(() => {
+  // preview on a video element
+  if (stream.value) {
+    videoRef.value!.srcObject = stream.value;
+    videoRef.value.play();
+    drawVideoToCanvas();
+  }
 });
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+canvas {
+  border: 1px solid #ccc;
+  cursor: nw-resize;
+}
+</style>
