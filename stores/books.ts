@@ -15,8 +15,16 @@ export const useBooksStore = defineStore('BooksStore', () => {
   function add(book: Book) {
     book.id = Number(book.industryIdentifiers[0].identifier);
     books.value.unshift(book);
-    localStorage.setItem('books', JSON.stringify(books.value));
   }
+
+  // Watch for changes and save to localStorage
+  watch(
+    books,
+    () => {
+      localStorage.setItem('books', JSON.stringify(books.value));
+    },
+    { deep: true }
+  );
 
   return { books, add };
 });
