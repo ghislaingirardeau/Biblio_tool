@@ -4,7 +4,7 @@
     class="my-2">
     <div class="flex justify-between">
       <div>
-        <h2>{{ props.book.author }}</h2>
+        <h2>{{ authors }}</h2>
         <span class="text-sm italic">{{ props.book.title }}</span>
       </div>
       <div>actions</div>
@@ -25,6 +25,10 @@ const props = defineProps({
     type: Object as PropType<Book>,
     default: () => ({} as Book),
   },
+});
+
+const authors = computed(() => {
+  return props.book.author.join(', ');
 });
 </script>
 

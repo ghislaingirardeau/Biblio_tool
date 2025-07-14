@@ -18,13 +18,13 @@
 </template>
 
 <script setup lang="ts">
-import { useBooksStore } from '~/stores/books';
-
 const active = defineModel<number>('active');
 const books = useBooksStore();
+const ModalBook = useModalBookStore();
 
 function endAddBook() {
-  books.add();
+  books.add(ModalBook.book!);
+  ModalBook.reset();
 }
 </script>
 
