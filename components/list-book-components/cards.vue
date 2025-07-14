@@ -7,7 +7,19 @@
         <h2>{{ authors }}</h2>
         <span class="text-sm italic">{{ props.book.title }}</span>
       </div>
-      <div>actions</div>
+      <div>
+        <UButton
+          icon="mdi:pencil"
+          size="lg"
+          color="primary"
+          class="mr-2"
+          variant="soft" />
+        <UButton
+          icon="mdi:delete"
+          size="lg"
+          color="primary"
+          variant="soft" />
+      </div>
     </div>
 
     <!-- <template #footer>
@@ -28,7 +40,7 @@ const props = defineProps({
 });
 
 const authors = computed(() => {
-  return props.book.author.join(', ');
+  return props.book.authors?.join(', ');
 });
 </script>
 

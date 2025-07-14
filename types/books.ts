@@ -2,7 +2,7 @@ export interface Book {
   id: number;
   title: string;
   subtitle: string;
-  author: string[];
+  authors: string[];
   publisher: string;
   publishedDate: string;
   industryIdentifiers: IndustryIdentifiers[];

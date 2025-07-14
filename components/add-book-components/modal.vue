@@ -3,10 +3,10 @@
     v-model:open="ModalBook.open"
     fullscreen>
     <UButton
-      icon="i-lucide-search"
-      size="lg"
+      icon="mdi:plus-box"
+      size="xl"
       color="primary"
-      variant="solid" />
+      variant="soft" />
 
     <template #title>
       <span>Add a new book</span>
