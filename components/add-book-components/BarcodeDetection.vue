@@ -67,6 +67,9 @@ function stopCamera() {
 
 // Toutes les 3s, on extrait une image de la vidéo
 const getBarcodeFromVideoInterval = useIntervalFn(() => {
+  if (!('BarcodeDetector' in window) || !window.BarcodeDetector) {
+    return;
+  }
   extractPictureFromVideo();
 }, 3000);
 
@@ -98,12 +101,6 @@ function extractPictureFromVideo() {
 
 // Fonction pour détecter un code-barres dans une image
 const detectBarcode = async (imageElement: HTMLImageElement) => {
-  if (!('BarcodeDetector' in window) || !window.BarcodeDetector) {
-    stopCamera();
-    codeBarMessage.value =
-      'BarcodeDetector ne fonctionne pas sur ce navigateur, merci de saisir manuellement le code barre';
-    return;
-  }
   try {
     codeBarMessage.value =
       "Détection en cours..., garder l'image stable pendant 3s";
@@ -162,6 +159,11 @@ function formatBarcodeFormat(format: string) {
 }
 
 onMounted(() => {
+  if (!('BarcodeDetector' in window) || !window.BarcodeDetector) {
+    codeBarMessage.value =
+      'BarcodeDetector ne fonctionne pas sur ce navigateur, merci de saisir manuellement le code barre';
+    return;
+  }
   startCamera();
 });
 

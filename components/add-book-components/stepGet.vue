@@ -10,7 +10,7 @@
       class="w-full my-5" />
     <UButton
       label="Next"
-      color="neutral"
+      color="primary"
       variant="subtle"
       @click="active = 1" />
   </div>

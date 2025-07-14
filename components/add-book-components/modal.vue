@@ -1,6 +1,6 @@
 <template>
   <UModal
-    v-model:open="open"
+    v-model:open="ModalBook.open"
     fullscreen>
     <UButton
       icon="i-lucide-search"
@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-const open = ref(false);
+const ModalBook = useModalBookStore();
 </script>
 
 <style scoped></style>

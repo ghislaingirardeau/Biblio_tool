@@ -12,12 +12,20 @@
     <UButton
       label="Add"
       color="neutral"
-      variant="subtle" />
+      variant="subtle"
+      @click="endAddBook" />
   </div>
 </template>
 
 <script setup lang="ts">
+import { useBooksStore } from '~/stores/books';
+
 const active = defineModel<number>('active');
+const books = useBooksStore();
+
+function endAddBook() {
+  books.add();
+}
 </script>
 
 <style scoped></style>
