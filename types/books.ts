@@ -11,9 +11,15 @@ export interface Book {
   language: string;
   infoLink: string;
   imageLinks: { thumbnail: string };
+  quotes: Quote[];
 }
 
 interface IndustryIdentifiers {
   type: string;
   identifier: string;
+}
+
+interface Quote {
+  page: string;
+  content: string;
 }

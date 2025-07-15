@@ -3,7 +3,7 @@
     variant="subtle"
     class="my-2">
     <div class="flex justify-between">
-      <div>
+      <div @click="goToBookPage">
         <h2>{{ authors }}</h2>
         <span class="text-sm italic">{{ props.book.title }}</span>
       </div>
@@ -32,6 +32,8 @@
 import type { Book } from '~/types/books';
 import type { PropType } from 'vue';
 
+const router = useRouter();
+
 const props = defineProps({
   book: {
     type: Object as PropType<Book>,
@@ -42,6 +44,15 @@ const props = defineProps({
 const authors = computed(() => {
   return props.book.authors?.join(', ');
 });
+
+function goToBookPage() {
+  router.push({
+    name: 'book-id',
+    params: {
+      id: props.book.id,
+    },
+  });
+}
 </script>
 
 <style scoped lang="scss"></style>

@@ -6,7 +6,11 @@
         size="lg"
         color="primary"
         variant="solid" />
-      <h1 class="text-2xl ml-2">Books</h1>
+      <h1
+        class="text-2xl ml-2"
+        @click="backToHome">
+        {{ bookTitle }}
+      </h1>
     </div>
     <div>
       <addBookModal />
@@ -14,6 +18,22 @@
   </header>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const router = useRouter();
+const route = useRoute();
+const { title } = useBooksStore();
+
+const bookTitle = computed(() => {
+  if (route.name === 'index') {
+    return 'Books';
+  } else {
+    return title(Number(route.params.id)) || 'Books';
+  }
+});
+
+function backToHome() {
+  router.push({ name: 'index' });
+}
+</script>
 
 <style scoped></style>
