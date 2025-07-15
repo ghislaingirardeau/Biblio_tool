@@ -1,15 +1,16 @@
 import { defineStore } from 'pinia';
-import type { Book } from '~/types/books';
+import type { Book, Quote } from '~/types/books';
 
 export const useModalBookStore = defineStore('ModalBooks', () => {
   const open = ref(false);
   const book = ref<null | Book>(null);
+  const quote = ref<null | Quote>(null);
 
   function reset() {
     open.value = false;
-    console.log('reset book');
     book.value = null;
+    quote.value = null;
   }
 
-  return { open, book, reset };
+  return { open, book, quote, reset };
 });

@@ -19,7 +19,8 @@ interface IndustryIdentifiers {
   identifier: string;
 }
 
-interface Quote {
+export interface Quote {
+  id: number;
   page: string;
   content: string;
 }

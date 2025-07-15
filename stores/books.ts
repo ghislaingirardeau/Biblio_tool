@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import type { Book } from '~/types/books';
+import type { Book, Quote } from '~/types/books';
 
 export const useBooksStore = defineStore('BooksStore', () => {
   const books = ref<Book[]>([]);
@@ -15,6 +15,17 @@ export const useBooksStore = defineStore('BooksStore', () => {
   function add(book: Book) {
     book.id = Number(book.industryIdentifiers[0].identifier);
     books.value.unshift(book);
+    localStorage.setItem('books', JSON.stringify(books.value));
+  }
+
+  function addQuote(bookId: number, quote: Quote) {
+    const book = find(bookId);
+    if (book && book?.quotes) {
+      book?.quotes.unshift(quote);
+    } else {
+      book!.quotes = [quote];
+    }
+
     localStorage.setItem('books', JSON.stringify(books.value));
   }
 
@@ -37,5 +48,5 @@ export const useBooksStore = defineStore('BooksStore', () => {
   //   { deep: true }
   // );
 
-  return { books, add, find, title };
+  return { books, title, add, addQuote, find };
 });
