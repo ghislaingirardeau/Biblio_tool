@@ -9,8 +9,12 @@
       </div>
 
       <div>
-        <QuoteBookModal />
-
+        <UButton
+          icon="mdi:pencil"
+          size="lg"
+          color="primary"
+          class="mr-2"
+          variant="soft" />
         <UButton
           icon="mdi:delete"
           size="lg"

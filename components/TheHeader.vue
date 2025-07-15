@@ -1,13 +1,13 @@
 <template>
   <header class="p-2 flex justify-between border-b-2">
-    <div class="flex">
+    <div class="flex w-5/6">
       <UButton
         icon="prime:align-justify"
         size="lg"
         color="primary"
         variant="solid" />
       <h1
-        class="text-2xl ml-2"
+        class="text-2xl ml-2 truncate bg-amber-200"
         @click="backToHome">
         {{ bookTitle }}
       </h1>
