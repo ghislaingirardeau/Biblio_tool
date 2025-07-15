@@ -13,7 +13,8 @@
       </h1>
     </div>
     <div>
-      <addBookModal />
+      <addBookModal v-if="isRouteHome" />
+      <QuoteBookModal v-else />
     </div>
   </header>
 </template>
@@ -23,8 +24,12 @@ const router = useRouter();
 const route = useRoute();
 const { title } = useBooksStore();
 
+const isRouteHome = computed(() => {
+  return route.name === 'index';
+});
+
 const bookTitle = computed(() => {
-  if (route.name === 'index') {
+  if (isRouteHome.value) {
     return 'Books';
   } else {
     return title(Number(route.params.id)) || 'Books';
