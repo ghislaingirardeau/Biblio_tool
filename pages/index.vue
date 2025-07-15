@@ -9,4 +9,9 @@
 
 <script setup lang="ts">
 const BooksStore = useBooksStore();
+
+onMounted(() => {
+  console.log('mount index');
+  BooksStore.initBooks();
+});
 </script>
