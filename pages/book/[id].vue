@@ -4,11 +4,10 @@
       <p class="italic">No quotes available</p>
     </div>
     <div v-else>
-      <p
+      <ListQuoteCards
         v-for="quote in quotes"
-        :key="quote.id">
-        {{ quotes }}
-      </p>
+        :key="quote.id"
+        :quote="quote" />
     </div>
   </div>
 </template>

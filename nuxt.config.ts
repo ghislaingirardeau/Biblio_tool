@@ -18,6 +18,7 @@ export default defineNuxtConfig({
     { path: '~/components/add-book-components', prefix: 'AddBook' },
     { path: '~/components/list-book-components', prefix: 'ListBook' },
     { path: '~/components/add-quote-components', prefix: 'QuoteBook' },
+    { path: '~/components/list-quote-components', prefix: 'ListQuote' },
 
     '~/components',
   ],

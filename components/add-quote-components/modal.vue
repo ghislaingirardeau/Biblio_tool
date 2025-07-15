@@ -20,7 +20,9 @@
         :items="items"
         class="w-full">
         <template #content>
-          <div v-if="isOcrMode">Scan texte {{ quote }}</div>
+          <div v-if="isOcrMode">
+            OCR tool, on get text, go to tab Text for edit before validation
+          </div>
           <div v-else>
             <QuoteBookTextArea v-model:quote="quote" />
           </div>
@@ -30,6 +32,7 @@
     <template #footer>
       <div class="w-full flex justify-end mr-4">
         <UButton
+          v-if="!isOcrMode"
           label="Add"
           color="primary"
           :disabled="isAddButtonDisabled"
@@ -54,7 +57,7 @@ const quote = ref<Quote>({
 });
 const items = ref([
   {
-    label: 'Extract Photo',
+    label: 'Extract text',
     icon: 'i-lucide-user',
   },
   {
