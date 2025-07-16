@@ -45,8 +45,13 @@ const videoRef = ref<HTMLVideoElement | null>(null);
 const { videoInputs: cameras } = useDevicesList({
   requestPermissions: true,
   onUpdated() {
-    if (!cameras.value.find((i) => i.deviceId === currentCamera.value))
+    // Try to select the back camera (label contains 'back' or 'rear')
+    const backCam = cameras.value.find((cam) => /back|rear/i.test(cam.label));
+    if (backCam) {
+      currentCamera.value = backCam.deviceId;
+    } else if (!cameras.value.find((i) => i.deviceId === currentCamera.value)) {
       currentCamera.value = cameras.value[0]?.deviceId;
+    }
   },
 });
 
