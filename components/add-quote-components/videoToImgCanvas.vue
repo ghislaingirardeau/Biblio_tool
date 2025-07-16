@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="border-2 border-amber-400 flex flex-wrap justify-center">
     <canvas
       ref="canvasRef"
-      :width="canvasWidth"
+      class="w-full"
       :height="canvasWHeight"
       style="border: 1px solid #ccc; touch-action: none"
       @mousedown="startDrag"
@@ -17,12 +17,16 @@
       style="display: none"
       autoplay
       playsinline />
-    <button @click="captureRect">Capture Rectangle</button>
-    <img
+    <UIcon
+      name="mdi:circle-slice-8"
+      class="size-20"
+      @click="captureRect" />
+
+    <!-- <img
       v-if="capturedImg"
       :src="capturedImg"
       alt="Captured"
-      style="margin-top: 10px; max-width: 200px" />
+      style="margin-top: 10px; max-width: 200px" /> -->
   </div>
 </template>
 
@@ -34,7 +38,7 @@ const videoRef = ref<HTMLVideoElement | null>(null);
 const capturedImg = ref<string | null>(null);
 
 const canvasWidth = 300;
-const canvasWHeight = 400;
+const canvasWHeight = 350;
 
 const squareSize = 20;
 
