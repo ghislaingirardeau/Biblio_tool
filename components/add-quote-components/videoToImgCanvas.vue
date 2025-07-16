@@ -1,8 +1,8 @@
 <template>
-  <div class="border-2 border-amber-400 flex flex-wrap justify-center">
+  <div class="flex flex-wrap justify-center">
     <canvas
       ref="canvasRef"
-      class="w-full"
+      :width="canvasWidth"
       :height="canvasWHeight"
       style="border: 1px solid #ccc; touch-action: none"
       @mousedown="startDrag"
@@ -31,10 +31,33 @@
 </template>
 
 <script setup lang="ts">
+import { useDevicesList, useUserMedia } from '@vueuse/core';
+
+const currentCamera = shallowRef<string>();
+const videoRef = ref<HTMLVideoElement | null>(null);
+
+/* ******** Set webcam & permission ******** */
+const { videoInputs: cameras } = useDevicesList({
+  requestPermissions: true,
+  onUpdated() {
+    if (!cameras.value.find((i) => i.deviceId === currentCamera.value))
+      currentCamera.value = cameras.value[0]?.deviceId;
+  },
+});
+
+const { stream, enabled } = useUserMedia({
+  constraints: reactive({ video: { deviceId: currentCamera } }),
+});
+
+watchEffect(() => {
+  if (videoRef.value) videoRef.value.srcObject = stream.value!;
+});
+
+/* **************************** */
+
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const ctx = ref<CanvasRenderingContext2D | null>(null);
 
-const videoRef = ref<HTMLVideoElement | null>(null);
 const capturedImg = ref<string | null>(null);
 
 const canvasWidth = 300;
@@ -210,19 +233,15 @@ function captureRect() {
 }
 
 onMounted(() => {
-  // drawVideoToCanvas()
-  navigator.mediaDevices
-    .getUserMedia({ video: true, audio: false })
-    .then((stream) => {
-      if (videoRef.value) {
-        videoRef.value.srcObject = stream;
-        videoRef.value.play();
-        drawVideoToCanvas();
-      }
-    })
-    .catch((err) => {
-      console.error(`An error occurred: ${err}`);
-    });
+  // prepare canvas for video
+  drawVideoToCanvas();
+  // start webcam
+  //   enabled.value = true;
+});
+
+onUnmounted(() => {
+  // stop webcam
+  //   enabled.value = false;
 });
 </script>
 
