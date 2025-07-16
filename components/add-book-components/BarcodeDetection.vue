@@ -3,7 +3,7 @@
     <video
       v-if="!codeBarMessage"
       ref="videoElement"
-      class="rounded-md h-48 w-full" />
+      class="rounded-md h-80 w-full" />
     <p
       v-else
       class="mt-2 font-bold italic">

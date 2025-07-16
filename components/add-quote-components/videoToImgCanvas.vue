@@ -17,6 +17,11 @@
       style="display: none"
       autoplay
       playsinline />
+    <p
+      v-for="camera in cameras"
+      :key="camera.label">
+      Camera: {{ camera.label }}
+    </p>
     <UIcon
       name="mdi:circle-slice-8"
       class="size-20"
@@ -46,6 +51,7 @@ const { videoInputs: cameras } = useDevicesList({
   requestPermissions: true,
   onUpdated() {
     // Try to select the back camera (label contains 'back' or 'rear')
+    console.log(cameras.value);
     const backCam = cameras.value.find((cam) => /back|rear/i.test(cam.label));
     if (backCam) {
       currentCamera.value = backCam.deviceId;

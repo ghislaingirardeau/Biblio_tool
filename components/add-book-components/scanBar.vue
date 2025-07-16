@@ -1,6 +1,7 @@
 <template>
   <div>
     <p v-if="isFetchingBookData">Fetching book data...</p>
+    <p v-else-if="isFetched">{{ ModalBook.book }}</p>
     <add-book-barcode-detection
       v-else
       @detection-isbn="isbnBookData" />
@@ -8,17 +9,17 @@
 </template>
 
 <script setup lang="ts">
-const bookData = ref(null);
+const ModalBook = useModalBookStore();
 const isFetchingBookData = ref(false);
 const isFetched = ref(false);
 async function isbnBookData(payload: string) {
   try {
     isFetchingBookData.value = true;
-    /* TODO: send barcode to API to get ISBN datas */
-    const response = await fetch(`/api/article?doi=${payload}`);
+    const response = await fetch(`/api/book?isbn=${payload}`);
+    // article?doi=
     if (response.ok) {
       const result = await response.json();
-      bookData.value = result.message;
+      ModalBook.book = result;
       isFetched.value = true;
     }
   } catch (error) {
