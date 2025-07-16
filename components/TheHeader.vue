@@ -7,7 +7,7 @@
         color="primary"
         variant="solid" />
       <h1
-        class="text-2xl ml-2 truncate bg-amber-200"
+        class="text-2xl ml-2 truncate"
         @click="backToHome">
         {{ bookTitle }}
       </h1>

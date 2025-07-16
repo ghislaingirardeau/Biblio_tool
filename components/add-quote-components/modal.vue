@@ -21,7 +21,7 @@
         class="w-full">
         <template #content>
           <div v-if="isOcrMode">
-            OCR tool, on get text, go to tab Text for edit before validation
+            <QuoteBookVideoToImgCanvas />
           </div>
           <div v-else>
             <QuoteBookTextArea v-model:quote="quote" />
