@@ -21,7 +21,9 @@
         class="w-full">
         <template #content>
           <div v-if="isOcrMode">
-            <QuoteBookVideoToImgCanvas />
+            <QuoteBookVideoToImgCanvas
+              v-model:quote="quote"
+              @next-step="label = '1'" />
           </div>
           <div v-else>
             <QuoteBookTextArea v-model:quote="quote" />

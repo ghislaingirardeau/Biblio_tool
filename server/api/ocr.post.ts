@@ -24,7 +24,7 @@ export default defineEventHandler(async (event) => {
 
   try {
     const text = await extractTextFromImage(tempPath);
-    await unlink(tempPath); // Supprime le fichier à l’emplacement tempPath
+    // await unlink(tempPath); // Supprime le fichier à l’emplacement tempPath
     return { text };
   } catch (err) {
     await unlink(tempPath); // Supprime le fichier à l’emplacement tempPath

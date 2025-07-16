@@ -28,13 +28,15 @@
       alt="Captured"
       style="margin-top: 10px; max-width: 200px" /> -->
   </div>
-  <div>
-    <p>{{ text }}</p>
-  </div>
 </template>
 
 <script setup lang="ts">
 import { useDevicesList, useUserMedia } from '@vueuse/core';
+import Tesseract from 'tesseract.js';
+import type { Quote } from '~/types/books';
+
+const quote = defineModel<Quote>('quote');
+const emits = defineEmits(['next-step']);
 
 const currentCamera = shallowRef<string>();
 const videoRef = ref<HTMLVideoElement | null>(null);
@@ -61,12 +63,10 @@ watchEffect(() => {
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const ctx = ref<CanvasRenderingContext2D | null>(null);
 
-const text = ref('sdvdfv');
-
 const capturedImg = ref<string | null>(null);
 
-const canvasWidth = 400;
-const canvasWHeight = 300;
+const canvasWidth = 300;
+const canvasWHeight = 350;
 
 const squareSize = 20;
 
@@ -211,7 +211,7 @@ function drawVideoToCanvas() {
 }
 
 // Capture only the rectangle area from the video
-function captureRect() {
+async function captureRect() {
   const video = videoRef.value;
   if (!video) return;
 
@@ -235,38 +235,23 @@ function captureRect() {
   );
 
   capturedImg.value = tempCanvas.toDataURL('image/png');
-  postImgForExtraction();
-}
 
-async function postImgForExtraction() {
-  const formData = new FormData();
-  if (capturedImg.value) {
-    // Convert base64 to Blob
-    const arr = capturedImg.value.split(',');
-    const mime = arr[0].match(/:(.*?);/)![1];
-    const bstr = atob(arr[1]);
-    let n = bstr.length;
-    const u8arr = new Uint8Array(n);
-    while (n--) {
-      u8arr[n] = bstr.charCodeAt(n);
-    }
-    const blob = new Blob([u8arr], { type: mime });
-    formData.append('image', blob, 'capture.png');
-
-    try {
-      const response = await fetch('/api/ocr', {
-        method: 'POST',
-        body: formData,
-      });
-      const result = await response.json();
-      console.log(result);
-      text.value = result.text;
-    } catch (error) {
-      console.log(error);
-    }
-  } else {
-    console.log('No image captured');
-  }
+  // Convert frame to blob
+  const blob = await new Promise<Blob | null>((resolve) =>
+    tempCanvas.toBlob(resolve, 'image/jpeg')
+  );
+  if (!blob) return;
+  const {
+    data: { text },
+  } = await Tesseract.recognize(blob as Blob, 'eng', {
+    logger: (m) => console.log(m),
+  });
+  // load the quote
+  quote.value!.content = text;
+  // go to edit
+  emits('next-step');
+  // stop camera
+  enabled.value = false;
 }
 
 onMounted(() => {
