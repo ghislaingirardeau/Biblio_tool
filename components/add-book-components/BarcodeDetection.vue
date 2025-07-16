@@ -126,9 +126,7 @@ const detectBarcode = async (imageElement: HTMLImageElement) => {
       };
       codeBarMessage.value = 'Code-barre détecté !';
 
-      console.log(codeBarMessage.value, barcodeDetected.value);
-
-      emit('detection-isbn', barcodeDetected.value);
+      emit('detection-isbn', barcodeDetected.value.code);
 
       // si il y a un code bar detecté, on stop la camera et l'interval
       stopCamera();

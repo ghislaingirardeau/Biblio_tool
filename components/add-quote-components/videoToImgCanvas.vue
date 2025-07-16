@@ -17,11 +17,7 @@
       style="display: none"
       autoplay
       playsinline />
-    <p
-      v-for="camera in cameras"
-      :key="camera.label">
-      Camera: {{ camera.label }}
-    </p>
+    <p>{{ cameras[1].label }}</p>
     <UIcon
       name="mdi:circle-slice-8"
       class="size-20"
@@ -50,14 +46,8 @@ const videoRef = ref<HTMLVideoElement | null>(null);
 const { videoInputs: cameras } = useDevicesList({
   requestPermissions: true,
   onUpdated() {
-    // Try to select the back camera (label contains 'back' or 'rear')
-    console.log(cameras.value);
-    const backCam = cameras.value.find((cam) => /back|rear/i.test(cam.label));
-    if (backCam) {
-      currentCamera.value = backCam.deviceId;
-    } else if (!cameras.value.find((i) => i.deviceId === currentCamera.value)) {
-      currentCamera.value = cameras.value[0]?.deviceId;
-    }
+    if (!cameras.value.find((i) => i.deviceId === currentCamera.value))
+      currentCamera.value = cameras.value[1]?.deviceId;
   },
 });
 
