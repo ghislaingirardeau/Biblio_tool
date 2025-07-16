@@ -15,9 +15,7 @@ async function isbnBookData(payload: string) {
   try {
     isFetchingBookData.value = true;
     /* TODO: send barcode to API to get ISBN datas */
-    const response = await fetch(
-      `http://localhost:3000/api/article?doi=${payload}`
-    );
+    const response = await fetch(`/api/article?doi=${payload}`);
     if (response.ok) {
       const result = await response.json();
       bookData.value = result.message;

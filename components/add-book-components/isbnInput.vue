@@ -26,9 +26,7 @@ async function findBook() {
   console.log('call api to find the book');
   try {
     isLoading.value = true;
-    const response = await fetch(
-      `http://localhost:3000/api/book?isbn=${bookIsbn.value}`
-    );
+    const response = await fetch(`/api/book?isbn=${bookIsbn.value}`);
     if (response.ok) {
       const result = await response.json();
       console.log(result);

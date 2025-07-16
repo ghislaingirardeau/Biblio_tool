@@ -28,6 +28,9 @@
       alt="Captured"
       style="margin-top: 10px; max-width: 200px" /> -->
   </div>
+  <div>
+    <p>{{ text }}</p>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -58,10 +61,12 @@ watchEffect(() => {
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const ctx = ref<CanvasRenderingContext2D | null>(null);
 
+const text = ref('sdvdfv');
+
 const capturedImg = ref<string | null>(null);
 
-const canvasWidth = 300;
-const canvasWHeight = 350;
+const canvasWidth = 400;
+const canvasWHeight = 300;
 
 const squareSize = 20;
 
@@ -230,18 +235,50 @@ function captureRect() {
   );
 
   capturedImg.value = tempCanvas.toDataURL('image/png');
+  postImgForExtraction();
+}
+
+async function postImgForExtraction() {
+  const formData = new FormData();
+  if (capturedImg.value) {
+    // Convert base64 to Blob
+    const arr = capturedImg.value.split(',');
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    const blob = new Blob([u8arr], { type: mime });
+    formData.append('image', blob, 'capture.png');
+
+    try {
+      const response = await fetch('/api/ocr', {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await response.json();
+      console.log(result);
+      text.value = result.text;
+    } catch (error) {
+      console.log(error);
+    }
+  } else {
+    console.log('No image captured');
+  }
 }
 
 onMounted(() => {
   // prepare canvas for video
   drawVideoToCanvas();
   // start webcam
-  //   enabled.value = true;
+  enabled.value = true;
 });
 
 onUnmounted(() => {
   // stop webcam
-  //   enabled.value = false;
+  enabled.value = false;
 });
 </script>
 
